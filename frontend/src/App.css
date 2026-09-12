@@ -1,0 +1,342 @@
+:root {
+  --accent: #6fae7d;
+  --accent-dark: #4f8c5d;
+  --accent-light: #eaf6ec;
+  --border: #d7ead9;
+  --text-muted: #6b8a72;
+  --bubble-assistant: #f2f8f2;
+  --text-dark: #23392a;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 800px;
+  height: 100vh;
+  margin: 0 auto;
+  font-family: system-ui, sans-serif;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(79, 140, 93, 0.12);
+}
+
+@media (min-width: 840px) {
+  .app {
+    height: min(100vh, 900px);
+    margin: 2.5rem auto;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(120deg, var(--accent-light), #ffffff);
+}
+
+.app-logo {
+  font-size: 1.6rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 4px 10px rgba(79, 140, 93, 0.25);
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--accent-dark);
+}
+
+.disclaimer {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.chat-window {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.empty-state {
+  margin: auto;
+  max-width: 460px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.empty-state-icon {
+  font-size: 2.5rem;
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-light);
+}
+
+.empty-state h2 {
+  margin: 0 0 0.5rem;
+  color: var(--text-dark);
+  font-size: 1.2rem;
+}
+
+.empty-state p {
+  margin: 0.15rem 0;
+}
+
+.empty-state-sub {
+  margin-bottom: 1rem !important;
+}
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.suggestions button {
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  color: var(--text-dark);
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.suggestions button:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+.message-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.message-row.user {
+  justify-content: flex-end;
+}
+
+.message-row.assistant {
+  justify-content: flex-start;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  background: var(--accent-light);
+}
+
+.message-row.user .avatar {
+  background: var(--accent-dark);
+}
+
+.message-bubble-wrap {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  gap: 0.3rem;
+}
+
+.message-row.user .message-bubble-wrap {
+  align-items: flex-end;
+}
+
+.message-bubble {
+  padding: 0.65rem 0.95rem;
+  border-radius: 16px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  box-shadow: 0 2px 6px rgba(35, 57, 42, 0.06);
+}
+
+.figure-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.figure-list figure {
+  margin: 0;
+  width: 160px;
+}
+
+.figure-list img {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  display: block;
+  box-shadow: 0 2px 6px rgba(35, 57, 42, 0.08);
+}
+
+.figure-list figcaption {
+  margin-top: 0.25rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.pdf-button {
+  align-self: flex-start;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  color: var(--accent-dark);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.pdf-button:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+.message-row.user .message-bubble {
+  background: var(--accent);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.message-row.assistant .message-bubble {
+  background: var(--bubble-assistant);
+  color: var(--text-dark);
+  border-bottom-left-radius: 4px;
+}
+
+.message-bubble p {
+  margin: 0;
+}
+
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  margin-left: 2px;
+  background: currentColor;
+  animation: blink 1s step-start infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.chat-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem 1rem;
+  border-top: 1px solid var(--border);
+  background: var(--accent-light);
+}
+
+.document-upload {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.upload-button {
+  padding: 0.3rem 0.7rem;
+  border: 1px dashed var(--accent);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--accent-dark);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.upload-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.document-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: white;
+  border: 1px solid var(--border);
+  color: var(--accent-dark);
+  font-size: 0.8rem;
+}
+
+.document-chip button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  font-size: 0.8rem;
+}
+
+.upload-error {
+  color: #c0392b;
+  font-size: 0.75rem;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chat-input-row textarea {
+  flex: 1;
+  resize: none;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  background: white;
+}
+
+.chat-input-row button {
+  padding: 0 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chat-input-row button:hover:not(:disabled) {
+  background: var(--accent-dark);
+}
+
+.chat-input-row button:disabled {
+  background: #b7cdb9;
+  cursor: not-allowed;
+}

@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+sentence-transformers
+qdrant-client
+rank-bm25
+groq
+numpy
+pymupdf
+tiktoken
+python-multipart
+reportlab
