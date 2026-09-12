@@ -31,7 +31,7 @@ state: dict = {}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Loading retriever (embedding model, reranker, BM25 index)...")
+    logger.info("Loading retriever (embedding model, BM25 index)...")
     state["retriever"] = HybridRetriever(
         qdrant_url=settings.qdrant_url,
         qdrant_api_key=settings.qdrant_api_key,

@@ -5,7 +5,7 @@ import numpy as np
 from qdrant_client import QdrantClient
 from qdrant_client.models import FieldCondition, Filter, MatchAny
 from rank_bm25 import BM25Okapi
-from sentence_transformers import CrossEncoder, SentenceTransformer
+from sentence_transformers import SentenceTransformer
 
 # Curated list of image filenames worth showing (charts/graphs/medically meaningful
 # illustrations) — most extracted images are logos, covers or icons and are excluded.
@@ -21,7 +21,7 @@ def _load_image_whitelist() -> set[str] | None:
 
 
 class HybridRetriever:
-    """Dense (Qdrant) + BM25 hybrid search with RRF fusion and cross-encoder reranking."""
+    """Dense (Qdrant) + BM25 hybrid search with RRF fusion."""
 
     def __init__(
         self,
@@ -30,14 +30,12 @@ class HybridRetriever:
         collection_name: str = "medlens",
         image_collection_name: str = "medlens_images",
         embedding_model_name: str = "sentence-transformers/all-MiniLM-L6-v2",
-        reranker_model_name: str = "cross-encoder/ms-marco-MiniLM-L-6-v2",
     ):
         self.collection_name = collection_name
         self.image_collection_name = image_collection_name
 
         self.client = QdrantClient(url=qdrant_url, api_key=qdrant_api_key)
         self.embedding_model = SentenceTransformer(embedding_model_name)
-        self.reranker = CrossEncoder(reranker_model_name)
         self.image_whitelist = _load_image_whitelist()
 
         self._chunks = []
@@ -109,17 +107,11 @@ class HybridRetriever:
         sorted_results = sorted(scores.items(), key=lambda x: x[1]["score"], reverse=True)
         return sorted_results[:top_k]
 
-    def rerank(self, query: str, fused_results, top_k: int = 8):
-        pairs = [[query, result[1]["payload"]["text"]] for result in fused_results]
-        scores = self.reranker.predict(pairs)
-        ranked = sorted(zip(scores, fused_results), key=lambda x: x[0], reverse=True)
-        return ranked[:top_k]
-
     def hybrid_search(self, query: str, top_k: int = 8):
         dense_results = self.dense_search(query, top_k=20)
         bm25_results = self.bm25_search(query, top_k=20)
-        fused = self.reciprocal_rank_fusion(dense_results, bm25_results)
-        return self.rerank(query, fused, top_k=top_k)
+        fused = self.reciprocal_rank_fusion(dense_results, bm25_results, top_k=top_k)
+        return [(item[1]["score"], item) for item in fused]
 
     def image_search(self, query: str, top_k: int = 3):
         query_vector = self.embedding_model.encode(query).tolist()
