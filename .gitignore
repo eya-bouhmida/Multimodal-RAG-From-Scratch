@@ -219,3 +219,7 @@ __marimo__/
 data/raw/
 data/processed/
 
+# Personal files that don't belong in this public repo
+*.docx
+Fraude_Detection_Notebookfinal*.html
+
