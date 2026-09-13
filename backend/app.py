@@ -37,8 +37,10 @@ async def lifespan(app: FastAPI):
         qdrant_api_key=settings.qdrant_api_key,
         collection_name=settings.collection_name,
         image_collection_name=settings.image_collection_name,
+        enable_bm25=settings.enable_bm25,
     )
-    logger.info("Retriever ready: %d text chunks indexed for BM25", state["retriever"].text_chunks_count)
+    mode = "hybrid (dense+BM25)" if settings.enable_bm25 else "dense-only (BM25 disabled)"
+    logger.info("Retriever ready: %d text chunks, mode=%s", state["retriever"].text_chunks_count, mode)
 
     state["generator"] = MedLensGenerator(
         groq_api_key=settings.groq_api_key,

@@ -109,6 +109,7 @@ class HybridRetriever:
         collection_name: str = "medlens",
         image_collection_name: str = "medlens_images",
         embedding_model_name: str = "sentence-transformers/all-MiniLM-L6-v2",
+        enable_bm25: bool = True,
     ):
         self.collection_name = collection_name
         self.image_collection_name = image_collection_name
@@ -119,7 +120,8 @@ class HybridRetriever:
 
         self._chunks = []
         self._bm25 = None
-        self._build_bm25_index()
+        if enable_bm25:
+            self._build_bm25_index()
 
     def _build_bm25_index(self):
         """Scroll the full collection (not just a page) to build the BM25 corpus."""
@@ -147,6 +149,10 @@ class HybridRetriever:
 
     @property
     def text_chunks_count(self) -> int:
+        if self._bm25 is None:
+            # BM25 disabled (memory-constrained deployment): avoid scrolling the full
+            # collection just to count it — a cheap server-side count is enough.
+            return self.client.count(self.collection_name).count
         return len(self._chunks)
 
     @property
@@ -166,6 +172,8 @@ class HybridRetriever:
         ).points
 
     def bm25_search(self, query: str, top_k: int = 20):
+        if self._bm25 is None:
+            return []
         tokenized_query = query.lower().split()
         scores = self._bm25.get_scores(tokenized_query)
         top_indices = np.argsort(scores)[::-1][:top_k]

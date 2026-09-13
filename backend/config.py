@@ -14,6 +14,12 @@ class Settings(BaseSettings):
     image_collection_name: str = "medlens_images"
     groq_model: str = "openai/gpt-oss-20b"
     cors_origins_raw: str = Field(default="http://localhost:5173", alias="CORS_ORIGINS")
+    enable_bm25: bool = Field(
+        default=True,
+        alias="ENABLE_BM25",
+        description="Set to false on memory-constrained deployments to skip building the BM25 "
+        "index and fall back to dense-only search (see claude.md for why).",
+    )
 
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,
