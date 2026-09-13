@@ -1,13 +1,10 @@
---index-url https://download.pytorch.org/whl/cpu
---extra-index-url https://pypi.org/simple
-
-torch
 fastapi
 uvicorn[standard]
 pydantic-settings
-sentence-transformers
+fastembed
 qdrant-client
 rank-bm25
+scipy
 groq
 numpy
 pymupdf
